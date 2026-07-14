@@ -383,7 +383,7 @@ class NuGetFeed {
             if (!$this.IsTrusted($packageId)) {
                 throw "Package $packageId is not trusted on $($this.url)"
             }
-            if ($this.packageBaseAddressUrl -like 'https://nuget.pkg.github.com/*') {
+            if (($this.packageBaseAddressUrl -like 'https://nuget.pkg.github.com/*') -or ($this.packageBaseAddressUrl -like 'https://*.ghe.com/*')) {
                 $queryUrl = "$($this.packageBaseAddressUrl.SubString(0,$this.packageBaseAddressUrl.LastIndexOf('/')))/$($packageId.ToLowerInvariant())/$($version.ToLowerInvariant()).json"
                 Write-Host "Download nuspec using $queryUrl"
                 $response = Invoke-WebRequest -UseBasicParsing -Method GET -Headers ($this.GetHeaders()) -Uri $queryUrl
